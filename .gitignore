@@ -1,0 +1,6 @@
+vendor/
+feed.json
+.phpunit.result.cache
+.idea/
+config.php
+composer.lock
