@@ -1,12 +1,12 @@
 {
   "name": "nattaylor/weatherstation",
-  "description": "stuff",
+  "description": "Publish LTV-WSDTH03 observations to Weather Underground PWS",
   "minimum-stability": "stable",
-  "license": "proprietary",
+  "license": "MIT",
   "authors": [
     {
-      "name": "ntaylor",
-      "email": "email@example.com"
+      "name": "Nat Taylor",
+      "email": "nattaylor@gmail.com"
     }
   ],
   "require-dev": {

@@ -1,6 +1,7 @@
 <?php
-
-//
+/**
+ * Copyright (c) 2020 Nat Taylor.
+ */
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once 'config.php';

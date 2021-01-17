@@ -1,4 +1,7 @@
 <?php
+/**
+ * Copyright (c) 2020 Nat Taylor.
+ */
 
 namespace App;
 
