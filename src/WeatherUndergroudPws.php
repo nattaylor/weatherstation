@@ -4,7 +4,15 @@
  */
 
 namespace App;
-
+/**
+ * Class WeatherUndergroudPws
+ * @package App
+ *
+ * Upload and retrieve data from Weather Underground Personal Weather Stations (PWS)
+ *
+ * https://support.weather.com/s/article/PWS-Upload-Protocol?language=en_US
+ * https://docs.google.com/document/d/1eKCnKXI9xnoMGRRzOL1xPCBihNV2rOet08qpE_gArAY/edit
+ */
 class WeatherUndergroudPws
 {
     public function get1day(String $apiKey, String $stationId, String $format = 'json', String $units = 'e'): object
@@ -27,6 +35,7 @@ class WeatherUndergroudPws
         $url = "https://weatherstation.wunderground.com/weatherstation/updateweatherstation.php?action=updateraw&ID={$user}&PASSWORD={$key}&"
             . implode("&", array_map(function($p) use ($observation) {return "$p={$observation[$p]}";}, array_keys($observation)));
         $curl->get($url);
+        // TODO: Check for errors
         return $curl->response;
     }
 }

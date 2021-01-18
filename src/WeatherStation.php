@@ -5,16 +5,27 @@
 
 namespace App;
 
+use http\Exception;
+
 /**
  * Class WeatherStation
  * @package App
  *
- * Client for the Lacrose View service
+ * Client for the La Crosse View
+ *
+ * Mostly copied by https://github.com/dbconfession78/py_weather_station
+ *
  */
 class WeatherStation
 {
     private $token;
 
+    /**
+     * Connect to a La Crosse View account
+     *
+     * @param String $email
+     * @param String $password
+     */
     public function login(String $email, String $password)
     {
         $url = "https://www.googleapis.com/" .
@@ -35,6 +46,7 @@ class WeatherStation
 
     public function getLocations(): object
     {
+        // TODO: Check for token
         $url = "https://lax-gateway.appspot.com/_ah/api/lacrosseClient/v1.1/active-user/locations";
         $curl = new \Curl\Curl();
         $curl->setHeader('Authorization', "Bearer {$this->token}");
@@ -44,6 +56,7 @@ class WeatherStation
 
     public function getDevices(String $location_id): object
     {
+        // TODO: Check for token
         $url = "https://lax-gateway.appspot.com/_ah/api/lacrosseClient/v1.1/active-user/location/$location_id/sensorAssociations?prettyPrint=false";
         $curl = new \Curl\Curl();
         $curl->setHeader('Authorization', "Bearer {$this->token}");
@@ -53,12 +66,13 @@ class WeatherStation
 
     public function getFeed(Array $params = null): object
     {
-        extract($params);
+        // TODO: Check for token
+        // TODO: Configurable paramaters
         $tz = "America/New_York";
         $agg = "ai.ticks.1";
         $fields = "Temperature,FeelsLike,Humidity,WindSpeed,WindChill,HeatIndex,WindHeading";
-        $_from = "from=1610894000&"; //1610218003;
-        $to = ""; "to=1610835640&";
+
+        extract($params);
 
         $url = "https://ingv2.lacrossetechnology.com/" .
             "api/v1.1/active-user/device-association/ref.user-device.{$device_id}/" .
@@ -78,7 +92,8 @@ class WeatherStation
     }
 
     /**
-     * Return an object with {"columns"->[columns], "index"->[timestamps], "data"->[samples]}
+     * Transform the feed and return an object with
+     *  {"columns"->[columns], "index"->[timestamps], "data"->[samples]}
      *
      * @param Object $feed
      * @return object
@@ -89,6 +104,7 @@ class WeatherStation
         $ref = "ref.user-device.{$feed->device_id}";
         $data = $feed->{$ref}->{$feed->agg};
         $table->columns = array_keys(get_object_vars($data->fields));
+        // TODO: arrow functions
         $table->index = array_map(function($sample) {return $sample->u;}, $data->fields->{$table->columns[0]}->values);
         $table->data = array_map(function($i) use ($data, $table) {
             return array_map(function($field) use ($i, $data) { return $data->fields->{$field}->values[$i]->s; }, $table->columns);}

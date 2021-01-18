@@ -13,7 +13,6 @@
     "phpunit/phpunit": "^9.5"
   },
   "require": {
-    "psr/log": "^1.1",
     "php-curl-class/php-curl-class": "^8.9"
   },
   "autoload": {
